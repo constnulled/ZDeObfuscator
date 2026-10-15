@@ -2,10 +2,10 @@ package com.javadeobfuscator.deobfuscator.api.helper;
 
 import java.util.ArrayList;
 
-import me.coley.cafedude.InvalidClassException;
-import me.coley.cafedude.classfile.ClassFile;
-import me.coley.cafedude.io.ClassFileReader;
-import me.coley.cafedude.io.ClassFileWriter;
+import software.coley.cafedude.InvalidClassException;
+import software.coley.cafedude.classfile.ClassFile;
+import software.coley.cafedude.io.ClassFileReader;
+import software.coley.cafedude.io.ClassFileWriter;
 import org.intellij.lang.annotations.MagicConstant;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;

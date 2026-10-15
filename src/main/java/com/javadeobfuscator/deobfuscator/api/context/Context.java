@@ -10,7 +10,7 @@ import org.jetbrains.annotations.UnmodifiableView;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
-import me.coley.cafedude.InvalidClassException;
+import software.coley.cafedude.InvalidClassException;
 import com.javadeobfuscator.deobfuscator.api.asm.ClassWrapper;
 import com.javadeobfuscator.deobfuscator.api.asm.FieldRef;
 import com.javadeobfuscator.deobfuscator.api.asm.MethodContext;

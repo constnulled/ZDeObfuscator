@@ -3,7 +3,7 @@ package com.javadeobfuscator.deobfuscator.api.classpath;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.tree.ClassNode;
-import me.coley.cafedude.InvalidClassException;
+import software.coley.cafedude.InvalidClassException;
 import com.javadeobfuscator.deobfuscator.api.helper.ClassHelper;
 import com.javadeobfuscator.deobfuscator.api.helper.FileHelper;
 
