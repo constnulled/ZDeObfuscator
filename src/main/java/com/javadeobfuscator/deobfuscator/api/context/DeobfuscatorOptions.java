@@ -1,12 +1,15 @@
 package com.javadeobfuscator.deobfuscator.api.context;
 
+import java.nio.file.Path;
+
 import org.objectweb.asm.ClassWriter;
 
 public record DeobfuscatorOptions(
     int classWriterFlags,
     boolean printStacktraces,
     boolean continueOnError,
-    boolean verifyBytecode) {
+    boolean verifyBytecode,
+    Path rtJarPath) {
 
   public static DeobfuscatorOptions defaults() {
     return builder().build();
@@ -21,6 +24,7 @@ public record DeobfuscatorOptions(
     private boolean printStacktraces = true;
     private boolean continueOnError = false;
     private boolean verifyBytecode = false;
+    private Path rtJarPath = null;
 
     private Builder() {
     }
@@ -45,8 +49,13 @@ public record DeobfuscatorOptions(
       return this;
     }
 
+    public Builder rtJarPath(Path rtJarPath) {
+      this.rtJarPath = rtJarPath;
+      return this;
+    }
+
     public DeobfuscatorOptions build() {
-      return new DeobfuscatorOptions(classWriterFlags, printStacktraces, continueOnError, verifyBytecode);
+      return new DeobfuscatorOptions(classWriterFlags, printStacktraces, continueOnError, verifyBytecode, rtJarPath);
     }
   }
 }

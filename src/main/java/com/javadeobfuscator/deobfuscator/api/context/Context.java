@@ -16,6 +16,7 @@ import com.javadeobfuscator.deobfuscator.api.asm.FieldRef;
 import com.javadeobfuscator.deobfuscator.api.asm.MethodContext;
 import com.javadeobfuscator.deobfuscator.api.asm.MethodRef;
 import com.javadeobfuscator.deobfuscator.api.classpath.ClassProvider;
+import com.javadeobfuscator.deobfuscator.api.execution.SandBox;
 import com.javadeobfuscator.deobfuscator.api.classpath.ClassInfoStorage;
 import com.javadeobfuscator.deobfuscator.api.classpath.CombinedClassProvider;
 import com.javadeobfuscator.deobfuscator.api.classpath.JvmClassProvider;
@@ -34,6 +35,8 @@ public class Context implements ClassProvider {
   private final ClassInfoStorage compiledClasses;
   private final ClassInfoStorage libraries;
 
+  private SandBox globalSandBox = null;
+
   /**
    * Creates a new {@link Context} instance from its options
    *
@@ -46,6 +49,13 @@ public class Context implements ClassProvider {
 
     this.compiledClasses = compiledClasses;
     this.libraries = libraries;
+  }
+
+  public synchronized SandBox getSandBox() {
+    if (this.globalSandBox == null) {
+      this.globalSandBox = new SandBox(this);
+    }
+    return this.globalSandBox;
   }
 
   public DeobfuscatorOptions getOptions() {

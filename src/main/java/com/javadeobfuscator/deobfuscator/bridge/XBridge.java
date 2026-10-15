@@ -25,7 +25,7 @@ public final class XBridge {
 
   public static Context createContext(Deobfuscator deobfuscator, Map<String, ClassNode> classes, Map<String, ClassNode> classpath, DeobfuscatorOptions options) {
     ClassInfoStorage libraries = new NodeBackedClassStorage(classpath, name -> !classes.containsKey(name));
-    Context context = new Context(options, new ClassInfoStorage(), libraries);
+    Context context = new Context(options, new NodeBackedClassStorage(classes, name -> true), libraries);
     for (Map.Entry<String, ClassNode> entry : classes.entrySet()) {
       ClassNode node = entry.getValue();
       context.getClassesMap().put(node.name, new ClassWrapper(node.name + ".class", node, null));

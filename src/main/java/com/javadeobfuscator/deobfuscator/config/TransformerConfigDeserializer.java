@@ -16,6 +16,7 @@
 
 package com.javadeobfuscator.deobfuscator.config;
 
+import com.javadeobfuscator.deobfuscator.bridge.XBackedTransformer;
 import com.javadeobfuscator.deobfuscator.transformers.DelegatingTransformer;
 import com.javadeobfuscator.deobfuscator.transformers.Transformer;
 import org.slf4j.Logger;
@@ -84,7 +85,9 @@ public class TransformerConfigDeserializer extends ValueDeserializer<Transformer
         }
 
         if (clazz != null) {
-            if (Transformer.class.isAssignableFrom(clazz)) {
+            if (com.javadeobfuscator.deobfuscator.api.transformer.Transformer.class.isAssignableFrom(clazz)) {
+                return new XBackedTransformer.Config(clazz.asSubclass(com.javadeobfuscator.deobfuscator.api.transformer.Transformer.class));
+            } else if (Transformer.class.isAssignableFrom(clazz)) {
                 return TransformerConfig.configFor(clazz.asSubclass(Transformer.class));
             } else {
                 throw ctxt.weirdStringException(id, Transformer.class, "Class does not extend com.javadeobfuscator.deobfuscator.transformers.Transformer");
