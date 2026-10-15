@@ -46,7 +46,19 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.6.1</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.ow2.asm</groupId>
+                        <artifactId>asm</artifactId>
+                        <version>${version.asm}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.ow2.asm</groupId>
+                        <artifactId>asm-commons</artifactId>
+                        <version>${version.asm}</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -186,8 +198,6 @@
             <artifactId>asm-analysis</artifactId>
             <version>${version.asm}</version>
         </dependency>
-
-        <!-- needs to be very late in the pom as it got a bunch of old stuff shaded inside -->
         <dependency>
             <groupId>com.github.java-deobfuscator</groupId>
             <artifactId>javavm</artifactId>
