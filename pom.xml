@@ -185,8 +185,8 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.Col-E</groupId>
-            <artifactId>CAFED00D</artifactId>
+            <groupId>software.coley</groupId>
+            <artifactId>cafedude-core</artifactId>
             <version>${version.dude}</version>
         </dependency>
     </dependencies>
