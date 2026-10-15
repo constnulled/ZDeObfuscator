@@ -1,9 +1,9 @@
-package com.javadeobfuscator.deobfuscator.x.api.environment;
+package com.javadeobfuscator.deobfuscator.api.environment;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.javadeobfuscator.deobfuscator.x.api.helper.PlatformType;
-import com.javadeobfuscator.deobfuscator.x.api.helper.SymLinks;
+import com.javadeobfuscator.deobfuscator.api.helper.PlatformType;
+import com.javadeobfuscator.deobfuscator.api.helper.SymLinks;
 
 import java.io.IOException;
 import java.nio.file.Files;

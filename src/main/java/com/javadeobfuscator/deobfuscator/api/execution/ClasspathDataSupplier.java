@@ -1,7 +1,7 @@
-package com.javadeobfuscator.deobfuscator.x.api.execution;
+package com.javadeobfuscator.deobfuscator.api.execution;
 
 import dev.xdark.ssvm.classloading.SupplyingClassLoaderInstaller;
-import com.javadeobfuscator.deobfuscator.x.api.classpath.ClassProvider;
+import com.javadeobfuscator.deobfuscator.api.classpath.ClassProvider;
 
 public class ClasspathDataSupplier implements SupplyingClassLoaderInstaller.DataSupplier {
 

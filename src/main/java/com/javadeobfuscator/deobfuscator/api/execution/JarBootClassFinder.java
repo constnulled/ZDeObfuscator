@@ -1,4 +1,4 @@
-package com.javadeobfuscator.deobfuscator.x.api.execution;
+package com.javadeobfuscator.deobfuscator.api.execution;
 
 import dev.xdark.ssvm.classloading.BootClassFinder;
 import dev.xdark.ssvm.classloading.ParsedClassData;

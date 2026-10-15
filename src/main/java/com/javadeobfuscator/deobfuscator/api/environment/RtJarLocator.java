@@ -1,4 +1,4 @@
-package com.javadeobfuscator.deobfuscator.x.api.environment;
+package com.javadeobfuscator.deobfuscator.api.environment;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

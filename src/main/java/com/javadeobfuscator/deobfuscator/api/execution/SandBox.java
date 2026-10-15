@@ -1,4 +1,4 @@
-package com.javadeobfuscator.deobfuscator.x.api.execution;
+package com.javadeobfuscator.deobfuscator.api.execution;
 
 import dev.xdark.ssvm.LinkResolver;
 import dev.xdark.ssvm.RuntimeResolver;
@@ -22,11 +22,11 @@ import java.util.List;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
-import com.javadeobfuscator.deobfuscator.x.api.asm.ClassWrapper;
-import com.javadeobfuscator.deobfuscator.x.api.classpath.CombinedClassProvider;
-import com.javadeobfuscator.deobfuscator.x.api.context.Context;
-import com.javadeobfuscator.deobfuscator.x.api.environment.RtJarLocator;
-import com.javadeobfuscator.deobfuscator.x.api.environment.JavaVersion;
+import com.javadeobfuscator.deobfuscator.api.asm.ClassWrapper;
+import com.javadeobfuscator.deobfuscator.api.classpath.CombinedClassProvider;
+import com.javadeobfuscator.deobfuscator.api.context.Context;
+import com.javadeobfuscator.deobfuscator.api.environment.RtJarLocator;
+import com.javadeobfuscator.deobfuscator.api.environment.JavaVersion;
 
 /**
  * A wrapper for {@link VirtualMachine} with some additional features and patches
