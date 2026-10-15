@@ -1,0 +1,102 @@
+name: build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Setup JDK 8
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Compute build number
+        id: meta
+        run: |
+          LAST_NUM=$(git ls-remote --tags --refs origin 'refs/tags/v[0-9]*' | sed 's|.*refs/tags/v||' | grep -E '^[0-9]+$' | sort -n | tail -n1)
+          LAST_NUM=${LAST_NUM:-0}
+          NEXT_NUM=$((LAST_NUM + 1))
+          echo "last_number=$LAST_NUM" >> "$GITHUB_OUTPUT"
+          echo "next_number=$NEXT_NUM" >> "$GITHUB_OUTPUT"
+
+      - name: Build
+        run: mvn -B -ntp clean package -DskipTests
+
+      - name: Package
+        id: package
+        env:
+          NEXT_NUM: ${{ steps.meta.outputs.next_number }}
+        run: |
+          SRC_JAR=$(ls target/deobfuscator-*.jar | grep -v '^target/original-' | head -n1)
+
+          if [ -z "$SRC_JAR" ] || [ ! -f "$SRC_JAR" ]; then
+            echo "::error::Shaded jar not found"
+            ls -la target/
+            exit 1
+          fi
+
+          JAR_NAME="deobfuscator-${NEXT_NUM}.jar"
+          cp "$SRC_JAR" "$JAR_NAME"
+
+          echo "jar=$JAR_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Generate changelog
+        env:
+          LAST_NUM: ${{ steps.meta.outputs.last_number }}
+          REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+        run: |
+          FORMAT="- %s ([%h](${REPO_URL}/commit/%H))"
+          {
+            echo "## Changes"
+            if [ "$LAST_NUM" = "0" ] || ! git rev-parse -q --verify "refs/tags/v${LAST_NUM}" > /dev/null; then
+              echo "_Initial release_"
+              echo
+              git log --pretty=format:"$FORMAT"
+            else
+              echo "_Changes since v${LAST_NUM}_"
+              echo
+              git log "v${LAST_NUM}..HEAD" --pretty=format:"$FORMAT"
+            fi
+            echo
+          } > CHANGELOG.md
+
+          cat CHANGELOG.md
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.package.outputs.jar }}
+          path: ${{ steps.package.outputs.jar }}
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v3.0.3
+        with:
+          files: ${{ steps.package.outputs.jar }}
+          tag_name: v${{ steps.meta.outputs.next_number }}
+          name: Deobfuscator Build ${{ steps.meta.outputs.next_number }}
+          body_path: CHANGELOG.md
+          target_commitish: ${{ github.sha }}
+          overwrite_files: true
+          fail_on_unmatched_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
