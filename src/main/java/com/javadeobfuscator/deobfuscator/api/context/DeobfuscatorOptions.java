@@ -9,7 +9,8 @@ public record DeobfuscatorOptions(
     boolean printStacktraces,
     boolean continueOnError,
     boolean verifyBytecode,
-    Path rtJarPath) {
+    Path rtJarPath,
+    int sandboxMaxJvmVersion) {
 
   public static DeobfuscatorOptions defaults() {
     return builder().build();
@@ -25,6 +26,7 @@ public record DeobfuscatorOptions(
     private boolean continueOnError = false;
     private boolean verifyBytecode = false;
     private Path rtJarPath = null;
+    private int sandboxMaxJvmVersion = 17;
 
     private Builder() {
     }
@@ -54,8 +56,13 @@ public record DeobfuscatorOptions(
       return this;
     }
 
+    public Builder sandboxMaxJvmVersion(int sandboxMaxJvmVersion) {
+      this.sandboxMaxJvmVersion = sandboxMaxJvmVersion;
+      return this;
+    }
+
     public DeobfuscatorOptions build() {
-      return new DeobfuscatorOptions(classWriterFlags, printStacktraces, continueOnError, verifyBytecode, rtJarPath);
+      return new DeobfuscatorOptions(classWriterFlags, printStacktraces, continueOnError, verifyBytecode, rtJarPath, sandboxMaxJvmVersion);
     }
   }
 }

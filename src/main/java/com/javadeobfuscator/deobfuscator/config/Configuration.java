@@ -87,6 +87,17 @@ public class Configuration {
     @JsonProperty
     private String rtJarPath;
 
+    @JsonProperty
+    private int sandboxMaxJvmVersion = 17;
+
+    public int getSandboxMaxJvmVersion() {
+        return sandboxMaxJvmVersion;
+    }
+
+    public void setSandboxMaxJvmVersion(int sandboxMaxJvmVersion) {
+        this.sandboxMaxJvmVersion = sandboxMaxJvmVersion;
+    }
+
     public String getRtJarPath() {
         return rtJarPath;
     }

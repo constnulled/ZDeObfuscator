@@ -44,7 +44,7 @@ public class SandBox {
    * Maximum JVM version the sandbox can emulate. SSVM's bootstrap requires the host to run
    * on Java 17, and its emulation layer supports up to Java 17 class file features.
    */
-  private static final int MAX_SUPPORTED_JVM_VERSION = 17;
+  public static final int DEFAULT_MAX_JVM_VERSION = 17;
 
   private final VirtualMachine vm;
   private final SupplyingClassLoaderInstaller.DataSupplier dataSupplier;
@@ -85,7 +85,7 @@ public class SandBox {
 
   /**
    * Scans all loaded classes in the context and returns the highest Java release version found,
-   * clamped to the range [{@link #MIN_SUPPORTED_JVM_VERSION}, {@link #MAX_SUPPORTED_JVM_VERSION}].
+   * clamped to the range [{@link #MIN_SUPPORTED_JVM_VERSION}, the configured sandboxMaxJvmVersion].
    *
    * <p>ASM stores the class file major version in {@code ClassNode.version}. The Java release
    * number is derived by subtracting {@link JavaVersion#VERSION_OFFSET} (44). For example,
@@ -103,12 +103,14 @@ public class SandBox {
         .max()
         .orElse(MIN_SUPPORTED_JVM_VERSION);
 
-    int clamped = Math.min(maxJavaVersion, MAX_SUPPORTED_JVM_VERSION);
+    int configuredMax = context.getOptions().sandboxMaxJvmVersion();
+    int limit = Math.max(MIN_SUPPORTED_JVM_VERSION, configuredMax);
+    int clamped = Math.min(maxJavaVersion, limit);
 
-    if (maxJavaVersion > MAX_SUPPORTED_JVM_VERSION) {
+    if (maxJavaVersion > limit) {
       LOGGER.warn(
-          "Target jar requires Java {} but the sandbox only supports up to Java {}. Clamping to Java {}.",
-          maxJavaVersion, MAX_SUPPORTED_JVM_VERSION, MAX_SUPPORTED_JVM_VERSION
+          "Target jar requires Java {} but the sandbox is limited to Java {}. Clamping to Java {}. Raise sandboxMaxJvmVersion in the config to change this.",
+          maxJavaVersion, limit, clamped
       );
     } else {
       LOGGER.info("Detected target JVM version: Java {}", clamped);

@@ -25,6 +25,7 @@ public class XBackedTransformer extends Transformer<XBackedTransformer.Config> {
                 .continueOnError(getDeobfuscator().getConfig().isContinueOnError())
                 .verifyBytecode(getDeobfuscator().getConfig().isVerifyEach())
                 .rtJarPath(rtJar == null ? null : Path.of(rtJar))
+                .sandboxMaxJvmVersion(getDeobfuscator().getConfig().getSandboxMaxJvmVersion())
                 .build();
         int changes = XBridge.run(getDeobfuscator(), classes, classpath, supplier, options);
         getDeobfuscator().resetHierachy();
