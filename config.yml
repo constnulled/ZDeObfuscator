@@ -1,0 +1,41 @@
+input: input.jar
+output: output.jar
+path:
+  - C:/Program Files/Java/jdk1.8.0/jre/lib/rt.jar
+  - C:/Program Files/Java/jdk1.8.0/jre/lib/jce.jar
+  - C:/Program Files/Java/jdk1.8.0/lib/tools.jar
+libraries:
+  - libs/library.jar
+ignoredClasses:
+  - ^com/google/.*
+  - ^org/apache/.*
+smartRedo: false
+verify: false
+detect: false
+patchAsm: false
+paramorphism: false
+paramorphismV2: false
+debugRulesAnalyzer: false
+deleteUselessClasses: false
+continueOnError: true
+verifyEach: false
+rtJarPath: C:/Program Files/Java/jdk1.8.0/jre/lib/rt.jar
+sandboxMaxJvmVersion: 17
+transformers:
+  - clean.UnknownAttributeCleanTransformer
+  - clean.InvalidMethodCleanTransformer
+  - composed.ComposedGeneralRepairTransformer
+  - composed.ComposedGeneralFlowTransformer
+  - universal.UniversalNumberTransformer
+  - universal.pool.UniversalNumberPoolTransformer
+  - universal.pool.UniversalStringPoolTransformer
+  - pool.InlineStaticFieldTransformer
+  - pool.InlineStaticArrayFieldTransformer
+  - pool.InlineLocalVariablesTransformer
+  - universal.StringBuilderTransformer
+  - universal.InlinePureFunctionsTransformer
+  - composed.ComposedPeepholeCleanTransformer
+  - universal.UnusedMethodRemoverTransformer
+  - normalizer.ClassNormalizer
+  - normalizer.FieldNormalizer
+  - normalizer.MethodNormalizer
