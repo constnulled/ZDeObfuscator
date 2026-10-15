@@ -16,22 +16,19 @@
 
 package com.javadeobfuscator.deobfuscator.config;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.*;
 import com.javadeobfuscator.deobfuscator.transformers.DelegatingTransformer;
 import com.javadeobfuscator.deobfuscator.transformers.Transformer;
 import org.slf4j.Logger;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.*;
+import tools.jackson.databind.json.JsonMapper;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class TransformerConfigDeserializer extends JsonDeserializer<TransformerConfig> {
+public class TransformerConfigDeserializer extends ValueDeserializer<TransformerConfig> {
 
     private Logger logger;
 
@@ -40,19 +37,16 @@ public class TransformerConfigDeserializer extends JsonDeserializer<TransformerC
     }
 
     @Override
-    public TransformerConfig deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-        JsonNode node = p.getCodec().readTree(p);
+    public TransformerConfig deserialize(JsonParser p, DeserializationContext ctxt) {
+        JsonNode node = ctxt.readTree(p);
 
         if (node.isObject()) {
             List<TransformerConfig> configs = new ArrayList<>();
 
-            for (Iterator<Map.Entry<String, JsonNode>> it = node.fields(); it.hasNext(); ) {
-                Map.Entry<String, JsonNode> field = it.next();
-
+            for (Map.Entry<String, JsonNode> field : node.properties()) {
                 TransformerConfig config = getById(p, ctxt, field.getKey());
 
-                // todo is there a better way to do this other than making a new ObjectMapper?
-                ObjectMapper mapper = new ObjectMapper(new JsonFactory());
+                ObjectMapper mapper = JsonMapper.builder().build();
                 configs.add(mapper.readerForUpdating(config).readValue(field.getValue()));
             }
 
@@ -66,13 +60,13 @@ public class TransformerConfigDeserializer extends JsonDeserializer<TransformerC
                 return config;
             }
         } else if (node.isTextual()) {
-            return getById(p, ctxt, node.asText());
+            return getById(p, ctxt, node.asString());
         } else {
             throw ctxt.wrongTokenException(p, String.class, JsonToken.VALUE_STRING, null);
         }
     }
 
-    private TransformerConfig getById(JsonParser p, DeserializationContext ctxt, String id) throws JsonMappingException {
+    private TransformerConfig getById(JsonParser p, DeserializationContext ctxt, String id) throws DatabindException {
         Class<?> clazz = null;
         try {
             clazz = Class.forName("com.javadeobfuscator.deobfuscator.transformers." + id);

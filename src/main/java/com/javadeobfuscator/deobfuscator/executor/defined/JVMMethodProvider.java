@@ -59,7 +59,6 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
 
 public class JVMMethodProvider extends MethodProvider {
     @SuppressWarnings({"serial", "CloneableClassWithoutClone"})
@@ -816,8 +815,8 @@ public class JVMMethodProvider extends MethodProvider {
 
         // Javax
         put("javax/xml/bind/DatatypeConverter", new HashMap<String, Function3<JavaValue, List<JavaValue>, Context, Object>>() {{
-            put("parseBase64Binary(Ljava/lang/String;)[B", (targetObject, args, context) -> DatatypeConverter.parseBase64Binary(args.get(0).as(String.class)));
-            put("parseHexBinary(Ljava/lang/String;)[B", (targetObject, args, context) -> DatatypeConverter.parseHexBinary(args.get(0).as(String.class)));
+            put("parseBase64Binary(Ljava/lang/String;)[B", (targetObject, args, context) -> Base64.getMimeDecoder().decode(args.get(0).as(String.class)));
+            put("parseHexBinary(Ljava/lang/String;)[B", (targetObject, args, context) -> java.util.HexFormat.of().parseHex(args.get(0).as(String.class)));
         }});
         put("javax/crypto/spec/SecretKeySpec", new HashMap<String, Function3<JavaValue, List<JavaValue>, Context, Object>>() {{
         	put("<init>([BLjava/lang/String;)V", (targetObject, args, context) -> {

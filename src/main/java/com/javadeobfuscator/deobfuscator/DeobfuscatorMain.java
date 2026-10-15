@@ -16,9 +16,6 @@
 
 package com.javadeobfuscator.deobfuscator;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.javadeobfuscator.deobfuscator.config.Configuration;
 import com.javadeobfuscator.deobfuscator.config.TransformerConfig;
 import com.javadeobfuscator.deobfuscator.config.TransformerConfigDeserializer;
@@ -27,9 +24,12 @@ import com.javadeobfuscator.deobfuscator.exceptions.PreventableStackOverflowErro
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.module.SimpleModule;
+import tools.jackson.dataformat.yaml.YAMLMapper;
 
 import java.io.File;
-import java.io.IOException;
 
 public class DeobfuscatorMain {
     public static void main(String[] args) throws ClassNotFoundException {
@@ -56,15 +56,16 @@ public class DeobfuscatorMain {
             return 2;
         }
 
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory())
-                .registerModule(
+        ObjectMapper mapper = YAMLMapper.builder()
+                .addModule(
                         new SimpleModule().addDeserializer(TransformerConfig.class, new TransformerConfigDeserializer(logger))
-                );
+                )
+                .build();
 
         Configuration configuration;
         try {
             configuration = mapper.readValue(new File(cmdLine.getOptionValue("config")), Configuration.class);
-        } catch (IOException e) {
+        } catch (JacksonException e) {
             logger.error("An error occurred while parsing the configuration file", e);
             return 3;
         }
