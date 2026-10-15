@@ -431,7 +431,15 @@ public class Deobfuscator {
         if (configuration.getTransformers() != null) {
             for (TransformerConfig config : configuration.getTransformers()) {
                 logger.info("Running {}", config.getImplementation().getCanonicalName());
-                runFromConfig(config);
+                if (configuration.isContinueOnError()) {
+                    try {
+                        runFromConfig(config);
+                    } catch (Throwable t) {
+                        logger.error("{} failed, continuing with the next transformer", config.getImplementation().getCanonicalName(), t);
+                    }
+                } else {
+                    runFromConfig(config);
+                }
             }
         }
 

@@ -7,6 +7,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.asm>9.11</version.asm>
+        <version.ssvm>dev-8a18a70785-1</version.ssvm>
         <version.dude>2.6.7</version.dude>
         <maven.compiler.release>25</maven.compiler.release>
     </properties>
@@ -88,6 +89,26 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.github.EpicPlayerA10.SSVM</groupId>
+            <artifactId>mirrors</artifactId>
+            <version>${version.ssvm}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.EpicPlayerA10.SSVM</groupId>
+            <artifactId>ssvm-core</artifactId>
+            <version>${version.ssvm}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.EpicPlayerA10.SSVM</groupId>
+            <artifactId>ssvm-invoke</artifactId>
+            <version>${version.ssvm}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.EpicPlayerA10.SSVM</groupId>
+            <artifactId>ssvm-io</artifactId>
+            <version>${version.ssvm}</version>
+        </dependency>
+        <dependency>
             <groupId>commons-cli</groupId>
             <artifactId>commons-cli</artifactId>
             <version>1.11.0</version>
@@ -149,6 +170,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>26.1.0</version>
+        </dependency>
+        <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
             <version>4.1.0-M1</version>
@@ -183,7 +209,6 @@
             <artifactId>javavm</artifactId>
             <version>12e219644f</version>
         </dependency>
-
         <dependency>
             <groupId>software.coley</groupId>
             <artifactId>cafedude-core</artifactId>

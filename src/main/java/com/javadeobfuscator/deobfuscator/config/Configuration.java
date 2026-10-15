@@ -78,6 +78,39 @@ public class Configuration {
     @JsonProperty
     private boolean deleteUselessClasses;
 
+    @JsonProperty
+    private boolean continueOnError;
+
+    @JsonProperty
+    private boolean verifyEach;
+
+    @JsonProperty
+    private String rtJarPath;
+
+    public String getRtJarPath() {
+        return rtJarPath;
+    }
+
+    public void setRtJarPath(String rtJarPath) {
+        this.rtJarPath = rtJarPath;
+    }
+
+    public boolean isContinueOnError() {
+        return continueOnError;
+    }
+
+    public void setContinueOnError(boolean continueOnError) {
+        this.continueOnError = continueOnError;
+    }
+
+    public boolean isVerifyEach() {
+        return verifyEach;
+    }
+
+    public void setVerifyEach(boolean verifyEach) {
+        this.verifyEach = verifyEach;
+    }
+
     public File getInput() {
         return input;
     }
