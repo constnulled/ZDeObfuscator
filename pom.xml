@@ -7,7 +7,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.asm>9.11</version.asm>
-        <version.dude>2.6.6</version.dude>
+        <version.dude>2.6.7</version.dude>
         <maven.compiler.release>25</maven.compiler.release>
     </properties>
     <build>
