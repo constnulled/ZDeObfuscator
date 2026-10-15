@@ -512,7 +512,7 @@ public class Deobfuscator {
                 classpath.put(ref, node);
                 return node;
             }
-        } catch (IOException ex) {
+        } catch (IOException | IllegalArgumentException ex) {
             // Ignored, plenty of cases where ref will not exist at runtime.
             // Cache missing value so that we don't try again later.
             missingRefs.add(ref);
