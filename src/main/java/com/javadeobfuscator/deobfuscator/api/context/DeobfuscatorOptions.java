@@ -6,8 +6,7 @@ public record DeobfuscatorOptions(
     int classWriterFlags,
     boolean printStacktraces,
     boolean continueOnError,
-    boolean verifyBytecode
-) {
+    boolean verifyBytecode) {
 
   public static DeobfuscatorOptions defaults() {
     return builder().build();
