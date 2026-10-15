@@ -1,4 +1,4 @@
-package com.javadeobfuscator.deobfuscator.x.api.helper;
+package com.javadeobfuscator.deobfuscator.api.helper;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

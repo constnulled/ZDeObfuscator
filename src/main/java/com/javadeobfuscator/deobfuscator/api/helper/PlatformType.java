@@ -1,4 +1,4 @@
-package com.javadeobfuscator.deobfuscator.x.api.helper;
+package com.javadeobfuscator.deobfuscator.api.helper;
 
 /**
  * Operating system enumeration.
