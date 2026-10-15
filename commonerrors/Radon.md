@@ -1,2 +1,0 @@
-## RadonTransformer(V2)
-RadonTransformer was meant to work on the earlier versions of Radon, while RadonTransformerV2 works on the later versions. Use RadonTransformer first, and if it doesn't work, use RadonTransformerV2. If the file was partially deobfuscated after running the transformer once, run it again. Also, if your file has invokedynamic obfuscation, you should add all required libraries.
