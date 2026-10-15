@@ -23,7 +23,6 @@ import com.javadeobfuscator.deobfuscator.executor.values.JavaValue;
 import org.objectweb.asm.Type;
 import com.javadeobfuscator.deobfuscator.utils.Utils;
 import org.objectweb.asm.tree.ClassNode;
-import sun.invoke.util.BytecodeDescriptor;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -46,6 +45,33 @@ public class ReflectiveProvider implements Provider {
         this.dictionary = dictionary;
     }
 
+    private static Class<?> resolveType(Type type) throws ClassNotFoundException {
+        switch (type.getSort()) {
+            case Type.BOOLEAN:
+                return boolean.class;
+            case Type.CHAR:
+                return char.class;
+            case Type.BYTE:
+                return byte.class;
+            case Type.SHORT:
+                return short.class;
+            case Type.INT:
+                return int.class;
+            case Type.FLOAT:
+                return float.class;
+            case Type.LONG:
+                return long.class;
+            case Type.DOUBLE:
+                return double.class;
+            case Type.VOID:
+                return void.class;
+            case Type.ARRAY:
+                return Class.forName(type.getDescriptor().replace('/', '.'), false, ClassLoader.getSystemClassLoader());
+            default:
+                return Class.forName(type.getClassName(), false, ClassLoader.getSystemClassLoader());
+        }
+    }
+
     @Override
     public Object invokeMethod(String className, String methodName, String methodDesc, JavaValue targetObject, List<JavaValue> args, Context context) {
         if (!dictionary.containsKey(className)) {
@@ -55,9 +81,11 @@ public class ReflectiveProvider implements Provider {
         Class<?>[] clazzes;
         try {
             targetClass = Class.forName(className.replace("/", "."));
-            List<Class<?>> l = BytecodeDescriptor.parseMethod(methodDesc, ClassLoader.getSystemClassLoader());
-            l.remove(l.size() - 1);
-            clazzes = l.toArray(new Class<?>[0]);
+            Type[] argumentTypes = Type.getArgumentTypes(methodDesc);
+            clazzes = new Class<?>[argumentTypes.length];
+            for (int i = 0; i < argumentTypes.length; i++) {
+                clazzes[i] = resolveType(argumentTypes[i]);
+            }
         } catch (Throwable e) {
             throw new ExecutionException(e);
         }
